@@ -1,30 +1,98 @@
-# Wdoit
+## Getting Started
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+### Detailed Setup
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/pilarrius-projects/v0-wdoit)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/1QIScT9UVEs)
+1. Clone the repository:
+\`\`\`bash
+git clone https://github.com/your-username/coraxalia.git
+cd coraxalia
+\`\`\`
 
-## Overview
+2. Install dependencies:
+\`\`\`bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+\`\`\`
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory with the following:
+   \`\`\`
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   \`\`\`
 
-## Deployment
+4. Run the development server:
+\`\`\`bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+\`\`\`
 
-Your project is live at:
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-**[https://vercel.com/pilarrius-projects/v0-wdoit](https://vercel.com/pilarrius-projects/v0-wdoit)**
+### Building for Production
 
-## Build your app
+To build the application for production:
 
-Continue building your app on:
+\`\`\`bash
+npm run build
+# or
+yarn build
+# or
+pnpm build
+\`\`\`
 
-**[https://v0.dev/chat/projects/1QIScT9UVEs](https://v0.dev/chat/projects/1QIScT9UVEs)**
+After building, you can start the production server:
 
-## How It Works
+\`\`\`bash
+npm start
+# or
+yarn start
+# or
+pnpm start
+\`\`\`
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### Deployment on Vercel
+
+The easiest way to deploy Coraxalia is to use the [Vercel Platform](https://vercel.com):
+
+1. Push your code to a GitHub repository
+2. Import the project to Vercel
+3. Add your environment variables in the Vercel dashboard
+4. Deploy
+
+### Environment Variables
+
+The following environment variables are required:
+
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous key |
+
+### Troubleshooting
+
+#### Common Issues
+
+1. **Authentication not working**:
+   - Check that your Supabase URL and anon key are correct
+   - Ensure email provider is configured in Supabase
+
+2. **Database tables not found**:
+   - Verify you've run the SQL setup script in Supabase
+   - Check for any SQL errors during table creation
+
+3. **Profile images not uploading**:
+   - Confirm the storage bucket is created and policies are set correctly
+   - Check browser console for any CORS-related errors
+
+4. **PWA not installing**:
+   - Ensure you're using HTTPS (required for PWA installation)
+   - Verify the manifest.json file is correctly configured
+
+For more help, please open an issue on the GitHub repository.
