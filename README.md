@@ -3,35 +3,31 @@
 ### Detailed Setup
 
 1. Clone the repository:
-\`\`\`bash
+```bash
 git clone https://github.com/your-username/coraxalia.git
 cd coraxalia
-\`\`\`
+```
 
 2. Install dependencies:
-\`\`\`bash
+```bash
 npm install
 # or
 yarn install
-# or
-pnpm install
-\`\`\`
+```
 
 3. Set up environment variables:
    Create a `.env.local` file in the root directory with the following:
-   \`\`\`
+   ```
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   \`\`\`
+   ```
 
 4. Run the development server:
-\`\`\`bash
+```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-\`\`\`
+```
 
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
@@ -39,23 +35,19 @@ pnpm dev
 
 To build the application for production:
 
-\`\`\`bash
+```bash
 npm run build
 # or
 yarn build
-# or
-pnpm build
-\`\`\`
+```
 
 After building, you can start the production server:
 
-\`\`\`bash
+```bash
 npm start
 # or
 yarn start
-# or
-pnpm start
-\`\`\`
+```
 
 ### Deployment on Vercel
 
@@ -91,8 +83,15 @@ The following environment variables are required:
    - Confirm the storage bucket is created and policies are set correctly
    - Check browser console for any CORS-related errors
 
-4. **PWA not installing**:
+4. **Styling issues**:
+   - If the app appears as a white page with black text, try rebuilding Tailwind CSS:
+     ```bash
+     npx tailwindcss --input ./app/globals.css --output ./app/output.css
+     ```
+   - Restart the development server after rebuilding CSS
+
+5. **PWA not installing**:
    - Ensure you're using HTTPS (required for PWA installation)
-   - Verify the manifest.json file is correctly configured
+   - Verify the manifest.json file and icon files are correctly configured
 
 For more help, please open an issue on the GitHub repository.
