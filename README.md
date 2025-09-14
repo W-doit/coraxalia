@@ -1,97 +1,70 @@
-## Getting Started
+# Getting Started with Create React App
 
-### Detailed Setup
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-1. Clone the repository:
-```bash
-git clone https://github.com/your-username/coraxalia.git
-cd coraxalia
-```
+## Available Scripts
 
-2. Install dependencies:
-```bash
-npm install
-# or
-yarn install
-```
+In the project directory, you can run:
 
-3. Set up environment variables:
-   Create a `.env.local` file in the root directory with the following:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
+### `npm start`
 
-4. Run the development server:
-```bash
-npm run dev
-# or
-yarn dev
-```
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-### Building for Production
+### `npm test`
 
-To build the application for production:
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-```bash
-npm run build
-# or
-yarn build
-```
+### `npm run build`
 
-After building, you can start the production server:
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-```bash
-npm start
-# or
-yarn start
-```
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-### Deployment on Vercel
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-The easiest way to deploy Coraxalia is to use the [Vercel Platform](https://vercel.com):
+### `npm run eject`
 
-1. Push your code to a GitHub repository
-2. Import the project to Vercel
-3. Add your environment variables in the Vercel dashboard
-4. Deploy
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-### Environment Variables
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-The following environment variables are required:
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-| Variable | Description |
-|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous key |
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-### Troubleshooting
+## Learn More
 
-#### Common Issues
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-1. **Authentication not working**:
-   - Check that your Supabase URL and anon key are correct
-   - Ensure email provider is configured in Supabase
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-2. **Database tables not found**:
-   - Verify you've run the SQL setup script in Supabase
-   - Check for any SQL errors during table creation
+### Code Splitting
 
-3. **Profile images not uploading**:
-   - Confirm the storage bucket is created and policies are set correctly
-   - Check browser console for any CORS-related errors
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-4. **Styling issues**:
-   - If the app appears as a white page with black text, try rebuilding Tailwind CSS:
-     ```bash
-     npx tailwindcss --input ./app/globals.css --output ./app/output.css
-     ```
-   - Restart the development server after rebuilding CSS
+### Analyzing the Bundle Size
 
-5. **PWA not installing**:
-   - Ensure you're using HTTPS (required for PWA installation)
-   - Verify the manifest.json file and icon files are correctly configured
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-For more help, please open an issue on the GitHub repository.
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
