@@ -12,14 +12,18 @@ import {
 } from "lucide-react";
 import { supabase } from "../../supabase/client";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
 import Profile from "./components/Profile/Profile";
-import Concerts from "./components/Conciertos/Conciertos"
+import Concerts from "./components/Conciertos/Conciertos";
 import ChoirInfo from "./components/info/ChoirInfo";
-import HomeComponent from "./components/Inico/Inicio"
-import Payments from "./components/pago/Pagos"
-import Members from "./components/Members/Members"
-import Repertoire from "./components/Repertoire/Repertoire"
+import HomeComponent from "./components/Inico/Inicio";
+import Payments from "./components/pago/Pagos";
+import Members from "./components/Members/Members";
+import Repertoire from "./components/Repertoire/Repertoire";
+
 function MemberDashboard({ user: initialUser }) {
+  const { t } = useTranslation();
   const [user, setUser] = useState(initialUser || null);
   const [loading, setLoading] = useState(!initialUser);
   const [activeSection, setActiveSection] = useState("inicio");
@@ -63,14 +67,14 @@ function MemberDashboard({ user: initialUser }) {
   };
 
   const navItems = [
-    { title: "Inicio", id: "inicio", icon: Home, roles: ["member", "director", "admin"] },
-    { title: "Perfil", id: "perfil", icon: User, roles: ["member", "director", "admin"] },
-    { title: "Información del Coro", id: "info", icon: Music, roles: ["member", "director", "admin"] },
-    { title: "Conciertos", id: "conciertos", icon: Calendar, roles: ["member", "director", "admin"] },
-    { title: "Repertorio", id: "repertorio", icon: FileText, roles: ["member", "director", "admin"] },
-    { title: "Pagos", id: "pagos", icon: CreditCard, roles: ["member", "director", "admin"] },
-    { title: "Estadísticas", id: "estadisticas", icon: BarChart, roles: ["admin"] },
-    { title: "Configuración", id: "configuracion", icon: Settings, roles: ["admin"] },
+    { title: t("memberDashboard.nav.home"), id: "inicio", icon: Home, roles: ["member", "director", "admin"] },
+    { title: t("memberDashboard.nav.profile"), id: "perfil", icon: User, roles: ["member", "director", "admin"] },
+    { title: t("memberDashboard.nav.choirInfo"), id: "info", icon: Music, roles: ["member", "director", "admin"] },
+    { title: t("memberDashboard.nav.concerts"), id: "conciertos", icon: Calendar, roles: ["member", "director", "admin"] },
+    { title: t("memberDashboard.nav.repertoire"), id: "repertorio", icon: FileText, roles: ["member", "director", "admin"] },
+    { title: t("memberDashboard.nav.payments"), id: "pagos", icon: CreditCard, roles: ["member", "director", "admin"] },
+    { title: t("memberDashboard.nav.statistics"), id: "estadisticas", icon: BarChart, roles: ["admin"] },
+    { title: t("memberDashboard.nav.settings"), id: "configuracion", icon: Settings, roles: ["admin"] },
   ];
 
   const filteredNavItems = navItems.filter((item) => item.roles.includes(user?.role));
@@ -78,25 +82,26 @@ function MemberDashboard({ user: initialUser }) {
   const SectionContent = () => {
     switch (activeSection) {
       case "inicio":
-        return <HomeComponent/>;
+        return <HomeComponent />;
       case "perfil":
-        return <Profile/>;
+        return <Profile />;
       case "info":
-        return <ChoirInfo/>;
+        return <ChoirInfo />;
       case "conciertos":
-        return <Concerts/>;
+        return <Concerts />;
       case "repertorio":
-        return <Repertoire/>;
+        return <Repertoire />;
       case "pagos":
-        return <Payments/>;
+        return <Payments />;
       default:
-        return <Concerts/>;
+        return <Concerts />;
     }
   };
+
   if (loading || !user) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-        Cargando tu panel...
+        {t("memberDashboard.loading")}
       </div>
     );
   }
@@ -107,7 +112,7 @@ function MemberDashboard({ user: initialUser }) {
       <aside className="bg-gradient-to-b from-red-700 via-orange-600 to-red-800 flex flex-col w-16 md:w-64 transition-all duration-300">
         {/* Logo */}
         <div className="flex items-center h-16 px-4 md:px-6 font-bold text-xl border-b border-red-900">
-          <span className="hidden md:inline">Coraxailia</span>
+          <span className="hidden md:inline">{t("memberDashboard.brand")}</span>
           <span className="md:hidden text-lg">C</span>
         </div>
 
@@ -145,7 +150,7 @@ function MemberDashboard({ user: initialUser }) {
           </div>
           <button
             onClick={handleSignOut}
-            aria-label="Cerrar sesión"
+            aria-label={t("memberDashboard.logout")}
             className="ml-auto p-2 rounded hover:bg-red-600 transition"
           >
             <LogOut className="w-5 h-5 text-orange-300" />

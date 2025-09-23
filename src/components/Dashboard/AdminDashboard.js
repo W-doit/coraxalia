@@ -14,36 +14,37 @@ import {
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../supabase/client";
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 // Import your actual components
 import Profile from "./components/Profile/Profile";
-import Concerts from "./components/Conciertos/Conciertos"
+import Concerts from "./components/Conciertos/Conciertos";
 import ChoirInfo from "./components/info/ChoirInfo";
-import HomeComponent from "./components/Inico/Inicio"
-import Payments from "./components/pago/Pagos"
-import Members from "./components/Members/Members"
-import Repertoire from "./components/Repertoire/Repertoire"
-
+import HomeComponent from "./components/Inico/Inicio";
+import Payments from "./components/pago/Pagos";
+import Members from "./components/Members/Members";
+import Repertoire from "./components/Repertoire/Repertoire";
 
 const Statistics = () => <div>Statistics Component</div>;
 const SettingsComponent = () => <div>Settings Component</div>;
 
-const navItems = [
-  { title: "Home", icon: <Home size={18} />, key: "home" },
-  { title: "Profile", icon: <User size={18} />, key: "profile" },
-  { title: "Choir Info", icon: <Music size={18} />, key: "info" },
-  { title: "Concerts", icon: <Calendar size={18} />, key: "concerts" },
-  { title: "Repertoire", icon: <FileText size={18} />, key: "repertoire" },
-  { title: "Payments", icon: <CreditCard size={18} />, key: "payments" },
-  { title: "Members", icon: <Users size={18} />, key: "members" },
-  { title: "Statistics", icon: <BarChart size={18} />, key: "stats" },
-  { title: "Settings", icon: <Settings size={18} />, key: "settings" },
-];
-
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const [activeComponent, setActiveComponent] = useState("home");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  const navItems = [
+    { title: t("adminDashboard.nav.home"), icon: <Home size={18} />, key: "home" },
+    { title: t("adminDashboard.nav.profile"), icon: <User size={18} />, key: "profile" },
+    { title: t("adminDashboard.nav.choirInfo"), icon: <Music size={18} />, key: "info" },
+    { title: t("adminDashboard.nav.concerts"), icon: <Calendar size={18} />, key: "concerts" },
+    { title: t("adminDashboard.nav.repertoire"), icon: <FileText size={18} />, key: "repertoire" },
+    { title: t("adminDashboard.nav.payments"), icon: <CreditCard size={18} />, key: "payments" },
+    { title: t("adminDashboard.nav.members"), icon: <Users size={18} />, key: "members" },
+    { title: t("adminDashboard.nav.statistics"), icon: <BarChart size={18} />, key: "stats" },
+    { title: t("adminDashboard.nav.settings"), icon: <Settings size={18} />, key: "settings" },
+  ];
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -63,7 +64,10 @@ const AdminDashboard = () => {
 
         if (userError) {
           console.error("Failed to load user metadata:", userError.message);
-          setUser({ username: "Unknown", role: "Unknown" });
+          setUser({
+            username: t("adminDashboard.user.unknownName"),
+            role: t("adminDashboard.user.unknownRole"),
+          });
         } else {
           setUser({ ...data });
         }
@@ -71,11 +75,15 @@ const AdminDashboard = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [t, navigate]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    Swal.fire({ icon: "success", title: "Logged out successfully", timer: 1500 });
+    Swal.fire({
+      icon: "success",
+      title: t("adminDashboard.logoutSuccess"),
+      timer: 1500,
+    });
     navigate("/");
   };
 
@@ -100,7 +108,7 @@ const AdminDashboard = () => {
       case "settings":
         return <SettingsComponent />;
       default:
-        return <div>Component not found</div>;
+        return <div>{t("adminDashboard.components.notFound")}</div>;
     }
   };
 
@@ -111,7 +119,7 @@ const AdminDashboard = () => {
         <div>
           {/* Admin Title */}
           <div className="hidden md:block text-2xl font-bold px-6 py-4 border-b border-orange-200">
-            Admin Panel
+            {t("adminDashboard.title")}
           </div>
 
           {/* User Info */}
@@ -151,7 +159,7 @@ const AdminDashboard = () => {
             className="w-full flex items-center md:justify-start justify-center gap-2 px-4 py-2 rounded-lg hover:bg-orange-400 transition"
           >
             <LogOut size={18} />
-            <span className="hidden md:inline">Logout</span>
+            <span className="hidden md:inline">{t("adminDashboard.logout")}</span>
           </button>
         </div>
       </div>

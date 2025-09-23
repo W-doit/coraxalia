@@ -1,0 +1,122 @@
+{
+  "navbar": {
+    "how": "How it Works",
+    "choirs": "Choirs",
+    "faq": "Q&A",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Sing. Connect. Belong.",
+    "subtitle": "Join choirs near you or create your own musical journey.",
+    "button": "Explore Choirs"
+  },
+  "how": {
+    "title": "How It Works",
+    "steps": {
+      "choose": {
+        "title": "Choose a Choir",
+        "desc": "Browse choirs and find one that suits your style."
+      },
+      "join": {
+        "title": "Join as Admin or Member",
+        "desc": "Admins manage. Members sing. Easy roles."
+      },
+      "stay": {
+        "title": "Stay Connected",
+        "desc": "Get rehearsal updates, events, and more."
+      }
+    }
+  },
+  "choirs": {
+    "title": "Available Choirs",
+    "chooseRole": "Click below to choose your role",
+    "admin": "Login as Admin",
+    "member": "Login as Member"
+  },
+  "faq": {
+    "title": "Q&A",
+    "q1": "Can I create my own choir?",
+    "a1": "Yes! Once you register as an admin, you’ll be able to create and manage your own choir.",
+    "q2": "Is it free to join?",
+    "a2": "Yes, joining and using the basic features is completely free.",
+    "q3": "Can I switch choirs later?",
+    "a3": "Absolutely. You can leave and join different choirs as needed."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "email": "Email",
+    "phone": "Phone"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+    "login": {
+    "title": "Login",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "button": "Login",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register",
+    "errorTitle": "Login Failed",
+    "successTitle": "Login Successful!"
+  },
+    "register": {
+    "title": "Register",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "Choose a username",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Create a password",
+    "roleLabel": "Register As",
+    "roleMember": "Member",
+    "roleAdmin": "Admin",
+    "button": "Register",
+    "alreadyAccount": "Already have an account?",
+    "loginLink": "Login",
+    "errorRegistration": "Registration Failed",
+    "errorSession": "Session Error",
+    "errorUserMeta": "User Metadata Failed",
+    "successTitle": "Registration Successful!",
+    "successText": "Welcome to the choir platform!"
+  },
+   "adminDashboard": {
+    "title": "Admin Panel",
+    "logout": "Logout",
+    "logoutSuccess": "Logged out successfully",
+    "nav": {
+      "home": "Home",
+      "profile": "Profile",
+      "choirInfo": "Choir Info",
+      "concerts": "Concerts",
+      "repertoire": "Repertoire",
+      "payments": "Payments",
+      "members": "Members",
+      "statistics": "Statistics",
+      "settings": "Settings"
+    },
+    "components": {
+      "notFound": "Component not found"
+    },
+    "user": {
+      "unknownName": "Unknown",
+      "unknownRole": "Unknown"
+    }
+  }, "memberDashboard": {
+    "loading": "Loading your panel...",
+    "brand": "Coraxailia",
+    "logout": "Logout",
+    "nav": {
+      "home": "Home",
+      "profile": "Profile",
+      "choirInfo": "Choir Info",
+      "concerts": "Concerts",
+      "repertoire": "Repertoire",
+      "payments": "Payments",
+      "statistics": "Statistics",
+      "settings": "Settings"
+    }
+  }
+}
