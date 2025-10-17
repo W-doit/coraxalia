@@ -108,6 +108,7 @@
    "memberDashboard": {
     "loading": "Cargando tu panel...",
     "brand": "Coraxalia",
+    
     "logout": "Cerrar sesión",
     "nav": {
       "home": "Inicio",
