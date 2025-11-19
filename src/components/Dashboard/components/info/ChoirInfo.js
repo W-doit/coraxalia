@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase/client";
 import { Pencil, Save, PlusCircle } from "lucide-react";
+import { Dialog } from "@headlessui/react";
 
 export default function ChoirInfo({ choirId: propChoirId }) {
   const [activeTab, setActiveTab] = useState("about");
@@ -11,14 +12,23 @@ export default function ChoirInfo({ choirId: propChoirId }) {
   const [loading, setLoading] = useState(true);
   const [choirId, setChoirId] = useState(propChoirId || null);
 
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newChoirData, setNewChoirData] = useState({
+    name: "",
+    founded: "",
+    description: "",
+    director_name: "",
+    director_bio: "",
+    rehearsal_day: "",
+    rehearsal_time: "",
+    rehearsal_location: "",
+    rehearsal_address: "",
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
 
       if (userError || !user) {
         console.error("Error getting user:", userError);
@@ -26,7 +36,6 @@ export default function ChoirInfo({ choirId: propChoirId }) {
         return;
       }
 
-      // 🔹 Get user profile
       const { data: profile, error: profileError } = await supabase
         .from("users")
         .select("role, choir_id")
@@ -41,40 +50,24 @@ export default function ChoirInfo({ choirId: propChoirId }) {
 
       setUserRole(profile?.role || "member");
       let effectiveChoirId = propChoirId || profile?.choir_id;
-
-      // Optional fallback: if member has no choir, assign a default choir ID
-      // (Replace 'default-choir-id' with your real choir UUID)
-      // if (!effectiveChoirId) effectiveChoirId = "default-choir-id";
-
       setChoirId(effectiveChoirId);
 
       if (!effectiveChoirId) {
-        console.warn("⚠️ User has no choir_id assigned.");
         setLoading(false);
         return;
       }
 
-      // 🔹 Fetch choir info
-      const { data: choir, error: choirError } = await supabase
+      const { data: choir } = await supabase
         .from("choir_info")
         .select("*")
         .eq("choir_id", effectiveChoirId)
         .single();
 
-      if (choirError && choirError.code !== "PGRST116") {
-        console.error("Error fetching choir info:", choirError);
-      }
-
-      // 🔹 Fetch board
-      const { data: boardData, error: boardError } = await supabase
+      const { data: boardData } = await supabase
         .from("choir_board")
         .select("*")
         .eq("choir_id", effectiveChoirId)
         .order("order_index");
-
-      if (boardError) {
-        console.error("Error fetching board:", boardError);
-      }
 
       setChoirInfo(choir || null);
       setBoard(boardData || []);
@@ -84,7 +77,6 @@ export default function ChoirInfo({ choirId: propChoirId }) {
     fetchData();
   }, [propChoirId]);
 
-  // 🔹 Handle updates (only admin)
   const handleSave = async () => {
     if (userRole !== "admin" || !choirId) return;
 
@@ -103,43 +95,31 @@ export default function ChoirInfo({ choirId: propChoirId }) {
       })
       .eq("choir_id", choirId);
 
-    if (error) {
-      console.error("Error saving choir info:", error);
-    } else {
-      setIsEditing(false);
-    }
+    if (!error) setIsEditing(false);
   };
 
-  // 🔹 Create new choir info (for admins if none exists)
-  const handleCreate = async () => {
+  const openCreateModal = () => {
+    if (userRole === "admin") setShowCreateModal(true);
+  };
+
+  const handleConfirmCreate = async () => {
     if (userRole !== "admin" || !choirId) return;
 
     const { error } = await supabase.from("choir_info").insert([
       {
         choir_id: choirId,
-        name: "Nuevo Coro",
-        founded: new Date().getFullYear().toString(),
-        description: "Descripción del coro...",
-        director_name: "Director/a",
-        director_bio: "",
-        rehearsal_day: "",
-        rehearsal_time: "",
-        rehearsal_location: "",
-        rehearsal_address: "",
+        ...newChoirData,
       },
     ]);
 
-    if (error) {
-      console.error("Error creating choir info:", error);
-    } else {
-      // reload data
+    if (!error) {
+      setShowCreateModal(false);
       window.location.reload();
     }
   };
 
   if (loading) return <p className="p-8 text-center">Cargando información...</p>;
 
-  // 🔹 No choir assigned
   if (!choirId)
     return (
       <p className="p-8 text-center text-gray-600">
@@ -147,27 +127,69 @@ export default function ChoirInfo({ choirId: propChoirId }) {
       </p>
     );
 
-  // 🔹 No choir info yet → allow admin to create
   if (!choirInfo && userRole === "admin") {
     return (
-      <div className="p-8 text-center">
-        <p className="mb-4 text-gray-700">
+      <div className="p-6 text-center">
+        <p className="mb-4 text-gray-700 text-sm sm:text-base">
           No existe información registrada para este coro.
         </p>
         <button
-          onClick={handleCreate}
-          className="inline-flex items-center gap-2 px-4 py-2 border rounded bg-green-600 text-white hover:bg-green-500"
+          onClick={openCreateModal}
+          className="inline-flex items-center gap-2 px-4 py-2 border rounded bg-green-600 text-white hover:bg-green-500 text-sm sm:text-base"
         >
           <PlusCircle size={18} /> Crear Información del Coro
         </button>
+
+        {/* Modal */}
+        <Dialog open={showCreateModal} onClose={() => setShowCreateModal(false)} className="relative z-50">
+          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          <div className="fixed inset-0 flex items-center justify-center p-2 sm:p-4">
+            <Dialog.Panel className="bg-white rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-lg space-y-4 overflow-y-auto max-h-[90vh]">
+              <Dialog.Title className="text-lg font-semibold text-center sm:text-left">
+                Crear Nuevo Coro
+              </Dialog.Title>
+
+              <div className="space-y-2">
+                {Object.keys(newChoirData).map((key) => (
+                  <div key={key}>
+                    <label className="text-sm font-medium capitalize block mb-1">
+                      {key.replaceAll("_", " ")}:
+                    </label>
+                    <input
+                      className="border rounded w-full px-2 py-1 text-sm"
+                      value={newChoirData[key]}
+                      onChange={(e) =>
+                        setNewChoirData({ ...newChoirData, [key]: e.target.value })
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
+                <button
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 text-sm"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleConfirmCreate}
+                  className="px-4 py-2 border rounded bg-green-600 text-white hover:bg-green-500 text-sm"
+                >
+                  Crear
+                </button>
+              </div>
+            </Dialog.Panel>
+          </div>
+        </Dialog>
       </div>
     );
   }
 
-  // 🔹 No info for members
   if (!choirInfo && userRole !== "admin")
     return (
-      <p className="p-8 text-center text-gray-600">
+      <p className="p-6 text-center text-gray-600 text-sm sm:text-base">
         No hay información disponible del coro aún.
       </p>
     );
@@ -175,41 +197,32 @@ export default function ChoirInfo({ choirId: propChoirId }) {
   const rules = choirInfo.rules || [];
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 p-4 md:p-8">
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-3xl font-bold">Información del Coro</h2>
+    <div className="min-h-screen bg-white text-gray-800 p-3 sm:p-4 md:p-8">
+      <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center sm:text-left w-full sm:w-auto">
+          Información del Coro
+        </h2>
 
-       {userRole === "admin" && (
-  <div className="flex gap-2">
-    <button
-      onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
-      className="flex items-center gap-2 px-4 py-2 border rounded bg-gray-800 text-white hover:bg-gray-700"
-    >
-      {isEditing ? (
-        <>
-          <Save size={18} /> Guardar
-        </>
-      ) : (
-        <>
-          <Pencil size={18} /> Editar
-        </>
-      )}
-    </button>
-
-    {/* Always show Create button */}
-    <button
-      onClick={handleCreate}
-      className="flex items-center gap-2 px-4 py-2 border rounded bg-green-600 text-white hover:bg-green-500"
-    >
-      <PlusCircle size={18} /> Crear Nuevo
-    </button>
-  </div>
-)}
-
+        {userRole === "admin" && (
+          <div className="flex flex-wrap gap-2 justify-center sm:justify-end w-full sm:w-auto">
+            <button
+              onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
+              className="flex items-center gap-2 px-3 py-2 border rounded bg-gray-800 text-white hover:bg-gray-700 text-sm sm:text-base"
+            >
+              {isEditing ? <><Save size={16} /> Guardar</> : <><Pencil size={16} /> Editar</>}
+            </button>
+            <button
+              onClick={openCreateModal}
+              className="flex items-center gap-2 px-3 py-2 border rounded bg-green-600 text-white hover:bg-green-500 text-sm sm:text-base"
+            >
+              <PlusCircle size={16} /> Crear Nuevo
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* 🔹 Tabs */}
-      <div className="mb-4 flex flex-wrap gap-2">
+      {/* Tabs */}
+      <div className="mb-4 flex flex-wrap gap-2 justify-center sm:justify-start">
         {[
           { value: "about", label: "Sobre Nosotros" },
           { value: "rules", label: "Normas y Reglamento" },
@@ -218,10 +231,10 @@ export default function ChoirInfo({ choirId: propChoirId }) {
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`px-4 py-2 rounded border ${
+            className={`px-3 sm:px-4 py-2 rounded border text-sm sm:text-base ${
               activeTab === tab.value
                 ? "bg-gray-800 text-white"
-                : "bg-white text-gray-800"
+                : "bg-white text-gray-800 hover:bg-gray-100"
             }`}
           >
             {tab.label}
@@ -229,14 +242,14 @@ export default function ChoirInfo({ choirId: propChoirId }) {
         ))}
       </div>
 
-      {/* 🔹 About Tab */}
+      {/* About Tab */}
       {activeTab === "about" && (
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="md:col-span-2 border p-4 rounded">
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+          <div className="md:col-span-2 border p-3 sm:p-4 rounded">
             {isEditing ? (
               <>
                 <input
-                  className="w-full font-semibold text-xl mb-2 border-b"
+                  className="w-full font-semibold text-lg sm:text-xl mb-2 border-b"
                   value={choirInfo.name}
                   onChange={(e) => setChoirInfo({ ...choirInfo, name: e.target.value })}
                 />
@@ -246,42 +259,44 @@ export default function ChoirInfo({ choirId: propChoirId }) {
                   onChange={(e) => setChoirInfo({ ...choirInfo, founded: e.target.value })}
                 />
                 <textarea
-                  className="w-full mt-2 border rounded p-2"
+                  className="w-full mt-2 border rounded p-2 text-sm sm:text-base"
                   rows="4"
                   value={choirInfo.description}
-                  onChange={(e) => setChoirInfo({ ...choirInfo, description: e.target.value })}
+                  onChange={(e) =>
+                    setChoirInfo({ ...choirInfo, description: e.target.value })
+                  }
                 />
               </>
             ) : (
               <>
-                <h3 className="text-xl font-semibold">{choirInfo.name}</h3>
+                <h3 className="text-lg sm:text-xl font-semibold">{choirInfo.name}</h3>
                 <p className="text-sm text-gray-500">Fundado en {choirInfo.founded}</p>
-                <p className="mt-2">{choirInfo.description}</p>
+                <p className="mt-2 text-sm sm:text-base">{choirInfo.description}</p>
               </>
             )}
           </div>
 
           {/* Director */}
-          <div className="border p-4 rounded">
+          <div className="border p-3 sm:p-4 rounded">
             <h4 className="text-lg font-semibold mb-2">Director</h4>
-            <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-sm sm:text-base">
               <img
                 src={choirInfo.director_image || "/placeholder.svg"}
                 alt={choirInfo.director_name}
                 className="h-24 w-24 rounded-full object-cover"
               />
-              <div>
+              <div className="w-full">
                 {isEditing ? (
                   <>
                     <input
-                      className="font-medium border-b"
+                      className="font-medium border-b w-full"
                       value={choirInfo.director_name}
                       onChange={(e) =>
                         setChoirInfo({ ...choirInfo, director_name: e.target.value })
                       }
                     />
                     <textarea
-                      className="text-sm text-gray-600 mt-2 border rounded p-2"
+                      className="text-sm text-gray-600 mt-2 border rounded p-2 w-full"
                       rows="3"
                       value={choirInfo.director_bio}
                       onChange={(e) =>
@@ -300,7 +315,7 @@ export default function ChoirInfo({ choirId: propChoirId }) {
           </div>
 
           {/* Rehearsals */}
-          <div className="border p-4 rounded">
+          <div className="border p-3 sm:p-4 rounded text-sm sm:text-base">
             <h4 className="text-lg font-semibold mb-2">Ensayos</h4>
             {isEditing ? (
               <>
@@ -337,8 +352,8 @@ export default function ChoirInfo({ choirId: propChoirId }) {
             ) : (
               <>
                 <p>
-                  <span className="font-medium">Horario:</span> {choirInfo.rehearsal_day},{" "}
-                  {choirInfo.rehearsal_time}
+                  <span className="font-medium">Horario:</span>{" "}
+                  {choirInfo.rehearsal_day}, {choirInfo.rehearsal_time}
                 </p>
                 <p>
                   <span className="font-medium">Ubicación:</span>{" "}
@@ -351,28 +366,30 @@ export default function ChoirInfo({ choirId: propChoirId }) {
         </div>
       )}
 
-      {/* 🔹 Rules */}
+      {/* Rules */}
       {activeTab === "rules" && (
-        <div className="border p-4 rounded max-h-[500px] overflow-y-auto space-y-4">
-          <h3 className="text-xl font-semibold mb-2">Normas y Reglamento del Coro</h3>
+        <div className="border p-3 sm:p-4 rounded max-h-[60vh] overflow-y-auto text-sm sm:text-base">
+          <h3 className="text-xl font-semibold mb-3">Normas y Reglamento del Coro</h3>
           {rules.map((rule, idx) => (
-            <div key={idx}>
+            <div key={idx} className="mb-3">
               <h4 className="font-semibold">{rule.title}</h4>
-              <p className="text-sm text-gray-700">{rule.text}</p>
+              <p className="text-gray-700">{rule.text}</p>
             </div>
           ))}
         </div>
       )}
 
-      {/* 🔹 Board */}
+      {/* Board */}
       {activeTab === "board" && (
-        <div className="border p-4 rounded">
-          <h3 className="text-xl font-semibold mb-4">Junta Directiva</h3>
-          <div className="grid gap-6 md:grid-cols-3">
+        <div className="border p-3 sm:p-4 rounded">
+          <h3 className="text-xl font-semibold mb-4 text-center sm:text-left">
+            Junta Directiva
+          </h3>
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {board.map((member) => (
               <div
                 key={member.id}
-                className="flex flex-col items-center text-center p-4 border rounded"
+                className="flex flex-col items-center text-center p-3 sm:p-4 border rounded"
               >
                 <img
                   src={member.image || "/placeholder.svg"}
@@ -386,6 +403,48 @@ export default function ChoirInfo({ choirId: propChoirId }) {
           </div>
         </div>
       )}
+
+      {/* Global Modal */}
+      <Dialog open={showCreateModal} onClose={() => setShowCreateModal(false)} className="relative z-50">
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-2 sm:p-4">
+          <Dialog.Panel className="bg-white rounded-xl shadow-lg p-4 sm:p-6 w-full max-w-lg space-y-4 overflow-y-auto max-h-[90vh]">
+            <Dialog.Title className="text-lg font-semibold">Crear Nuevo Coro</Dialog.Title>
+
+            <div className="space-y-2">
+              {Object.keys(newChoirData).map((key) => (
+                <div key={key}>
+                  <label className="text-sm font-medium capitalize block mb-1">
+                    {key.replaceAll("_", " ")}:
+                  </label>
+                  <input
+                    className="border rounded w-full px-2 py-1 text-sm"
+                    value={newChoirData[key]}
+                    onChange={(e) =>
+                      setNewChoirData({ ...newChoirData, [key]: e.target.value })
+                    }
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
+              <button
+                onClick={() => setShowCreateModal(false)}
+                className="px-4 py-2 border rounded bg-gray-200 hover:bg-gray-300 text-sm"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleConfirmCreate}
+                className="px-4 py-2 border rounded bg-green-600 text-white hover:bg-green-500 text-sm"
+              >
+                Crear
+              </button>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </div>
   );
 }

@@ -31,7 +31,8 @@
     "title": "Coros Disponibles",
     "chooseRole": "Haz clic abajo para elegir tu rol",
     "admin": "Entrar como Admin",
-    "member": "Entrar como Miembro"
+    "member": "Entrar como Miembro",
+    "CreateYourOwn": "Crea Tu Propio Coro"
   },
   "faq": {
     "title": "Preguntas y Respuestas",
@@ -80,7 +81,13 @@
     "errorSession": "Error de sesión",
     "errorUserMeta": "Error al guardar usuario",
     "successTitle": "¡Registro exitoso!",
-    "successText": "¡Bienvenido a la plataforma de coros!"
+    "successText": "¡Bienvenido a la plataforma de coros!",
+    "choiceTitle": "Elige una opción",
+    "choiceText": "¿Quieres crear un coro nuevo o unirte a uno existente?",
+    "createChoir": "Crear Coro",
+    "joinChoir": "Unirse al Coro",
+    "confirmEmailText": "Se ha enviado un correo de confirmación. Por favor, verifica tu correo antes de iniciar sesión.",
+    "goToLogin": "Ir a Iniciar Sesión"
   },
    "adminDashboard": {
     "title": "Panel de Administración",

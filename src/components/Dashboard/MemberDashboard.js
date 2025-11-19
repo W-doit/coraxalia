@@ -90,7 +90,7 @@ function MemberDashboard({ user: initialUser }) {
       case "conciertos":
         return <Concerts />;
       case "repertorio":
-        return <Repertoire />;
+        return <Repertoire isAdmin={false} />;
       case "pagos":
         return <Payments />;
       default:

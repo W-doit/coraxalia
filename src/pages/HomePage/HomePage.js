@@ -8,9 +8,12 @@ const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleLoginRedirect = (choir, role) => {
-    navigate(`/register?choir=${choir}&role=${role}`);
+  const handleLoginRedirect = () => {
+    navigate(`/login`);
   };
+  const handleRegisterAdminRedirect = () => {
+    navigate(`/register`);
+  }
 
   return (
     <div className="font-sans scroll-smooth bg-gray-50 text-black">
@@ -91,9 +94,20 @@ const Home = () => {
                   {t("choirs.member")}
                 </button>
               </div>
+              
             </motion.div>
           ))}
+          
+         
         </div>
+        <div className="text-center mt-12">
+         <button
+                  onClick={() => handleRegisterAdminRedirect()}
+                  className="bg-black text-white py-2 rounded hover:bg-gray-800 transition py-2 px-4 text-center "
+                >
+                  {t("choirs.CreateYourOwn")}
+                </button>
+                </div>
       </section>
 
       {/* Q&A Section */}

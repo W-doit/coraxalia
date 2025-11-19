@@ -31,7 +31,8 @@
     "title": "Available Choirs",
     "chooseRole": "Click below to choose your role",
     "admin": "Login as Admin",
-    "member": "Login as Member"
+    "member": "Login as Member",
+    "CreateYourOwn": "Create Your Own Choir"
   },
   "faq": {
     "title": "Q&A",
@@ -80,7 +81,14 @@
     "errorSession": "Session Error",
     "errorUserMeta": "User Metadata Failed",
     "successTitle": "Registration Successful!",
-    "successText": "Welcome to the choir platform!"
+    "successText": "Welcome to the choir platform!",
+    "choiceTitle": "Choose an option",
+    "choiceText": "Do you want to create a new choir or join an existing one?",
+    "createChoir": "Create Choir",
+    "joinChoir": "Join Choir",
+    "confirmEmailText": "A confirmation email has been sent. Please verify your email before logging in.",
+    "goToLogin": "Go to Login"
+
   },
    "adminDashboard": {
     "title": "Admin Panel",
