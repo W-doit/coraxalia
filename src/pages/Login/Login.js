@@ -2,96 +2,108 @@ import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { supabase } from '../../supabase/client';
+import { useTranslation } from "react-i18next";
 
 function Login() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handlerLogin = async (e) => {
-    e.preventDefault();
+const handlerLogin = async (e) => {
+  e.preventDefault();
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    if (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Login Failed',
-        text: error.message,
-        customClass: {
-          confirmButton: 'my-swal-btn'
-        }
-      });
-      return;
-    }
-
+  if (error) {
     Swal.fire({
-      icon: 'success',
-      title: 'Login Successful!',
-      showConfirmButton: false,
-      timer: 1500,
+      icon: 'error',
+      title: t("login.errorTitle"),
+      text: error.message,
     });
+    return;
+  }
 
-    // Optional: check user role from 'users' table
-    const { data: userData, error: roleError } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', data.user.id)
-      .single();
-      console.log("Role fetch result:", userData, roleError);
-    if (userData?.role === 'admin') {
-      navigate('/dashboard/admin');
-    } else {
-      navigate('/dashboard/member');
-    }
-  };
+  // get current logged in user
+  const user = data.user;
+
+  // get user's role from users table
+  const { data: userData, error: roleError } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (roleError) {
+    console.error('Role fetch error:', roleError);
+  }
+
+  // redirect based on role
+  if (userData?.role === 'admin') {
+    navigate('/dashboard/admin');
+  } else if (userData?.role === 'member') {
+    navigate('/dashboard/member');
+  } else {
+    // fallback if user has no role (maybe old account)
+    navigate('/choose-choir');
+  }
+
+  // optional success popup
+  Swal.fire({
+    icon: 'success',
+    title: t("login.successTitle"),
+    showConfirmButton: false,
+    timer: 1500,
+  });
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-red-400 to-orange-400">
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-bold text-center text-red-600 mb-6">Login</h2>
+        <h2 className="text-3xl font-bold text-center text-red-600 mb-6">
+          {t("login.title")}
+        </h2>
         <form onSubmit={handlerLogin}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="email">Email</label>
+            <label className="block text-gray-700 mb-2">{t("login.emailLabel")}</label>
             <input
-              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder={t("login.emailPlaceholder")}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400"
+              className="w-full px-4 py-2 border rounded-xl"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2" htmlFor="password">Password</label>
+            <label className="block text-gray-700 mb-2">{t("login.passwordLabel")}</label>
             <input
-              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              placeholder={t("login.passwordPlaceholder")}
               required
-              className="w-full px-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-red-400"
+              className="w-full px-4 py-2 border rounded-xl"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-red-500 hover:bg-orange-500 text-white py-2 rounded-xl transition duration-300"
-          >
-            Login
+          <button className="w-full bg-red-500 hover:bg-orange-500 text-white py-2 rounded-xl">
+            {t("login.button")}
           </button>
+
           <p className="text-sm text-center mt-4 text-gray-600">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-orange-600 hover:underline">Register</Link>
+            {t("login.noAccount")}{' '}
+            <Link to="/register" className="text-orange-600 hover:underline">
+              {t("login.registerLink")}
+            </Link>
           </p>
+
         </form>
       </div>
     </div>
   );
 }
-
 export default Login;
