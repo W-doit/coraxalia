@@ -24,14 +24,32 @@
 body {
   @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
 }
+
 .my-swal-btn {
   background-color: #3085d6;
   color: white;
   border: none;
+  margin-left: 5px;
   padding: 10px 20px;
   border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
-
 .my-swal-btn:hover {
   background-color: #2874c6;
+}
+
+.my-swal-btn-yellow {
+  background-color: #f59e0b;
+}
+.my-swal-btn-yellow:hover {
+  background-color: #d97706;
+}
+
+.my-swal-btn-gray {
+  background-color: #6b7280;
+}
+.my-swal-btn-gray:hover {
+  background-color: #4b5563;
 }
