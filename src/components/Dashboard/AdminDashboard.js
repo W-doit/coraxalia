@@ -69,51 +69,52 @@ export default function AdminDashboard() {
    * Load user + config on mount
    ---------------------------- */
   useEffect(() => {
-    const load = async () => {
-      const { data: auth } = await supabase.auth.getUser();
-      const loggedUser = auth?.user;
+   const load = async () => {
+  const { data: auth } = await supabase.auth.getUser();
+  const loggedUser = auth?.user;
 
-      if (!loggedUser) return navigate("/login");
+  if (!loggedUser) return navigate("/login");
 
-      // Fetch user info
-    const { data: userData } = await supabase
-      .from("users")
-      .select("id, username, role")   // <-- ADD id
-      .eq("id", loggedUser.id)
+  const { data: userData } = await supabase
+    .from("users")
+    .select("id, username, role")
+    .eq("id", loggedUser.id)
+    .single();
+
+  setUser(userData);
+
+  // Fetch configuration
+  let { data: config } = await supabase
+    .from("configuration")
+    .select("*")
+    .eq("user_id", loggedUser.id)
+    .maybeSingle();   // ✅ prevents hard errors
+
+  // If missing → create default row
+  if (!config) {
+    const { data: newConfig } = await supabase
+      .from("configuration")
+      .insert([
+        {
+          user_id: loggedUser.id,
+          theme_color: "#f97316",
+          logo_url: ""
+        }
+      ])
+      .select()
       .single();
 
-      setUser(userData);
+    config = newConfig || { theme_color: "#f97316", logo_url: "" };  // ✅ guaranteed fallback
+  }
 
+  // Always safe now
+  const finalColor = config?.theme_color || "#f97316";
 
-      // Fetch configuration for this user
-      let { data: config } = await supabase
-        .from("configuration")
-        .select("*")
-        .eq("user_id", loggedUser.id)
-        .single();
+  setThemeColor(finalColor);
+  localStorage.setItem("theme_color", finalColor);
 
-      // If no config row exists → create one
-      if (!config) {
-        const { data: newConfig } = await supabase
-          .from("configuration")
-          .insert([
-            {
-              user_id: loggedUser.id,
-              theme_color: "#f97316",
-              logo_url: ""
-            }
-          ])
-          .select()
-          .single();
-
-        config = newConfig;
-      }
-
-      setThemeColor(config.theme_color);
-      localStorage.setItem("theme_color", config.theme_color);
-
-      setLogoUrl(config.logo_url || "");
-    };
+  setLogoUrl(config?.logo_url || "");
+};
 
     load();
 
