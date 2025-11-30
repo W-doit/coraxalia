@@ -11,6 +11,11 @@
 # production
 /build
 
+# Next.js (should not be in this CRA project)
+/.next/
+/out/
+next-env.d.ts
+
 # misc
 .DS_Store
 .env.local
