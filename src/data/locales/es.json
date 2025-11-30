@@ -1,0 +1,131 @@
+{
+  "navbar": {
+    "how": "Cómo Funciona",
+    "choirs": "Coros",
+    "faq": "Preguntas",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Canta. Conecta. Pertenece.",
+    "subtitle": "Únete a coros cercanos o crea tu propio viaje musical.",
+    "button": "Explorar Coros"
+  },
+  "how": {
+    "title": "Cómo Funciona",
+    "steps": {
+      "choose": {
+        "title": "Elige un Coro",
+        "desc": "Explora coros y encuentra uno que se adapte a tu estilo."
+      },
+      "join": {
+        "title": "Únete como Admin o Miembro",
+        "desc": "Los administradores gestionan. Los miembros cantan. Roles fáciles."
+      },
+      "stay": {
+        "title": "Mantente Conectado",
+        "desc": "Recibe actualizaciones de ensayos, eventos y más."
+      }
+    }
+  },
+  "choirs": {
+    "title": "Coros Disponibles",
+    "chooseRole": "Haz clic abajo para elegir tu rol",
+    "admin": "Entrar como Admin",
+    "member": "Entrar como Miembro",
+    "CreateYourOwn": "Crea Tu Propio Coro"
+  },
+  "faq": {
+    "title": "Preguntas y Respuestas",
+    "q1": "¿Puedo crear mi propio coro?",
+    "a1": "¡Sí! Una vez que te registres como admin, podrás crear y gestionar tu propio coro.",
+    "q2": "¿Es gratis unirse?",
+    "a2": "Sí, unirse y usar las funciones básicas es completamente gratis.",
+    "q3": "¿Puedo cambiar de coro más tarde?",
+    "a3": "Por supuesto. Puedes salir y unirte a diferentes coros cuando lo necesites."
+  },
+  "contact": {
+    "title": "Contáctanos",
+    "email": "Correo",
+    "phone": "Teléfono"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados."
+  },
+  "login": {
+    "title": "Iniciar sesión",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Introduce tu correo",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Introduce tu contraseña",
+    "button": "Entrar",
+    "noAccount": "¿No tienes una cuenta?",
+    "registerLink": "Regístrate",
+    "errorTitle": "Error al iniciar sesión",
+    "successTitle": "¡Inicio de sesión exitoso!"
+  },
+   "register": {
+    "title": "Registrarse",
+    "usernameLabel": "Nombre de usuario",
+    "usernamePlaceholder": "Elige un nombre de usuario",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Introduce tu correo",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Crea una contraseña",
+    "roleLabel": "Registrarse como",
+    "roleMember": "Miembro",
+    "roleAdmin": "Administrador",
+    "button": "Registrarse",
+    "alreadyAccount": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión",
+    "errorRegistration": "Error al registrarse",
+    "errorSession": "Error de sesión",
+    "errorUserMeta": "Error al guardar usuario",
+    "successTitle": "¡Registro exitoso!",
+    "successText": "¡Bienvenido a la plataforma de coros!",
+    "choiceTitle": "Elige una opción",
+    "choiceText": "¿Quieres crear un coro nuevo o unirte a uno existente?",
+    "createChoir": "Crear Coro",
+    "joinChoir": "Unirse al Coro",
+    "confirmEmailText": "Se ha enviado un correo de confirmación. Por favor, verifica tu correo antes de iniciar sesión.",
+    "goToLogin": "Ir a Iniciar Sesión"
+  },
+   "adminDashboard": {
+    "title": "Panel de Administración",
+    "logout": "Cerrar sesión",
+    "logoutSuccess": "Sesión cerrada con éxito",
+    "nav": {
+      "home": "Inicio",
+      "profile": "Perfil",
+      "choirInfo": "Información del Coro",
+      "concerts": "Conciertos",
+      "repertoire": "Repertorio",
+      "payments": "Pagos",
+      "members": "Miembros",
+      "statistics": "Estadísticas",
+      "settings": "Configuración"
+    },
+    "components": {
+      "notFound": "Componente no encontrado"
+    },
+    "user": {
+      "unknownName": "Desconocido",
+      "unknownRole": "Desconocido"
+    }
+  },
+   "memberDashboard": {
+    "loading": "Cargando tu panel...",
+    "brand": "Coraxalia",
+    
+    "logout": "Cerrar sesión",
+    "nav": {
+      "home": "Inicio",
+      "profile": "Perfil",
+      "choirInfo": "Información del Coro",
+      "concerts": "Conciertos",
+      "repertoire": "Repertorio",
+      "payments": "Pagos",
+      "statistics": "Estadísticas",
+      "settings": "Configuración"
+    }
+  }
+}

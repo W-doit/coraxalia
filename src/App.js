@@ -1,4 +1,4 @@
-import { Login , Register, Home } from "./pages";
+import { Login , Register, Home ,JoinChoir,ChooseChoir,CreateChoir } from "./pages";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import MemberDashboard from "./components/Dashboard/MemberDashboard";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -26,6 +26,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/join-choir" element={<JoinChoir />} />
+          <Route path="/choose-choir" element={<ChooseChoir />} />
+          <Route path="/create-choir" element={<CreateChoir />} />
+
             {/* Dashboard Routes */}
         <Route path="/dashboard/admin" element={<AdminDashboard  />} />
         <Route path="/dashboard/member" element={<MemberDashboard />} />
